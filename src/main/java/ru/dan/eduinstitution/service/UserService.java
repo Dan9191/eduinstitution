@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ru.dan.eduinstitution.entity.User;
 import ru.dan.eduinstitution.model.UserCreateDto;
@@ -20,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final EntityToDtoMapper entityToDtoMapper;
 
+    @Transactional
     public UserResponseDto createUser(UserCreateDto userCreateDto) {
         log.info("Creating user entity with name: {}", userCreateDto.getName());
         User user = new User(userCreateDto);
@@ -31,6 +33,7 @@ public class UserService {
         return responseDto;
     }
 
+    @Transactional(readOnly = true)
     public UserResponseDto getUserById(Long id) {
         log.info("Retrieving user entity by ID: {}", id);
         Optional<User> userOptional = userRepository.findById(id);

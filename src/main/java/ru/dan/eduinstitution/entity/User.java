@@ -1,5 +1,6 @@
 package ru.dan.eduinstitution.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,37 +32,48 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "User entity representing a user in the educational institution")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the user", example = "1")
     private Long id;
 
     @Column(nullable = false)
+    @Schema(description = "Name of the user", example = "John Doe")
     private String name;
 
     @Column(unique = true, nullable = false)
+    @Schema(description = "Email of the user", example = "john.doe@example.com")
     private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Schema(description = "Role of the user", example = "STUDENT")
     private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+    @Schema(description = "Profile of the user")
     private Profile profile;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    @Schema(description = "List of courses taught by this user", hidden = true)
     private List<Course> coursesTaught;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @Schema(description = "List of enrollments of this user", hidden = true)
     private List<Enrollment> enrollments;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @Schema(description = "List of submissions made by this user", hidden = true)
     private List<Submission> submissions;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @Schema(description = "List of quiz submissions made by this user", hidden = true)
     private List<QuizSubmission> quizSubmissions;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @Schema(description = "List of course reviews made by this user", hidden = true)
     private List<CourseReview> courseReviews;
 
     public User(UserCreateDto userCreateDto) {
@@ -77,7 +89,12 @@ public class User {
 
 
     public enum Role {
-        STUDENT, TEACHER, ADMIN;
+        @Schema(description = "Student role")
+        STUDENT, 
+        @Schema(description = "Teacher role")
+        TEACHER, 
+        @Schema(description = "Admin role")
+        ADMIN;
 
         public static Role getRole(String roleName) {
             return Role.valueOf(roleName);

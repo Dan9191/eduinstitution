@@ -1,5 +1,6 @@
 package ru.dan.eduinstitution.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,14 +23,18 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@Schema(description = "Tag entity representing a course tag")
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the tag", example = "1")
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Schema(description = "Name of the tag", example = "Java")
     private String name;
 
     @ManyToMany(mappedBy = "tags")
+    @Schema(description = "List of courses associated with this tag")
     private Set<Course> courses = new HashSet<>();
 }

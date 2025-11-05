@@ -1,5 +1,6 @@
 package ru.dan.eduinstitution.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +19,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Schema(description = "Category entity representing a course category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the category", example = "1")
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Schema(description = "Name of the category", example = "Programming")
     private String name;
 }
