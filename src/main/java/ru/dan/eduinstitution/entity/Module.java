@@ -17,6 +17,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Тематический раздел внутри курса.
+ */
 @Entity
 @Table(name = "modules")
 @Getter

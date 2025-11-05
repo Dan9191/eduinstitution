@@ -13,9 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Сущность-связка между студентом и курсом.
+ */
 @Entity
 @Table(name = "enrollments")
 @Getter
@@ -42,5 +44,6 @@ public class Enrollment {
     private Course course;
 
     private LocalDate enrollDate;
+
     private String status; // Active, Completed, Dropped
 }

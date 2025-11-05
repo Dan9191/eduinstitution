@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Вариант ответа.
+ */
 @Entity
 @Table(name = "answer_options")
 @Getter

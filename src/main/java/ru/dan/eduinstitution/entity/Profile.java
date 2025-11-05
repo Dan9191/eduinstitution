@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Профиль пользователя.
+ */
 @Entity
 @Table(name = "profiles")
 @Getter
@@ -27,5 +30,6 @@ public class Profile {
     private User user;
 
     private String bio;
+
     private String avatarUrl;
 }

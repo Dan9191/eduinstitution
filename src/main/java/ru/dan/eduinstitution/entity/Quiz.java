@@ -16,6 +16,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Тест.
+ */
 @Entity
 @Table(name = "quizzes")
 @Getter

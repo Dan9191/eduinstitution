@@ -20,6 +20,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+
+/**
+ * Пользователь.
+ */
 @Entity
 @Table(name = "users")
 @Getter

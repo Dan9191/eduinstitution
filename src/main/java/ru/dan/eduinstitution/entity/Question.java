@@ -18,6 +18,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Вопрос.
+ */
 @Entity
 @Table(name = "questions")
 @Getter

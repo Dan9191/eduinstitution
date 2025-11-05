@@ -14,6 +14,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Отзыв о курсе.
+ */
 @Entity
 @Table(name = "course_reviews")
 @Getter

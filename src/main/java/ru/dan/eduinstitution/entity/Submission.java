@@ -14,6 +14,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Ответ/решение студента на задание.
+ */
 @Entity
 @Table(name = "submissions")
 @Getter

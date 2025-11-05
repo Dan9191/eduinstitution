@@ -16,6 +16,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Урок.
+ */
 @Entity
 @Table(name = "lessons")
 @Getter

@@ -14,6 +14,9 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Тег.
+ */
 @Entity
 @Table(name = "tags")
 @Getter

@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Категория курса.
+ */
 @Entity
 @Table(name = "categories")
 @Getter
