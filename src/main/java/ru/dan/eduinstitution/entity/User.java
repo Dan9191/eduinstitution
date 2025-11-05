@@ -17,9 +17,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.dan.eduinstitution.model.UserCreateDto;
 
 import java.util.List;
-
 
 /**
  * Пользователь.
@@ -46,8 +46,7 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    // Связи
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private Profile profile;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
@@ -65,7 +64,25 @@ public class User {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<CourseReview> courseReviews;
 
-    public enum Role {
-        STUDENT, TEACHER, ADMIN
+    public User(UserCreateDto userCreateDto) {
+        this.name = userCreateDto.getName();
+        this.email = userCreateDto.getEmail();
+        this.role = Role.getRole(userCreateDto.getRole());
+        Profile profile = new Profile();
+        this.profile = profile;
+        profile.setBio(userCreateDto.getBio());
+        profile.setUser(this);
+        profile.setAvatarUrl(userCreateDto.getAvatarUrl());
     }
+
+
+    public enum Role {
+        STUDENT, TEACHER, ADMIN;
+
+        public static Role getRole(String roleName) {
+            return Role.valueOf(roleName);
+        }
+
+    }
+
 }
