@@ -187,6 +187,90 @@ GET /category/1
 }
 ```
 
+### Записи студентов на курсы
+
+#### Запись студента на курс
+```http
+POST /enrollment/enroll
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "courseId": 1
+}
+```
+
+##### Поля:
+- `studentId` (long, обязательное) - ID студента
+- `courseId` (long, обязательное) - ID курса
+
+##### Ответ (201 Created):
+```json
+{
+  "studentId": 1,
+  "studentName": "John Doe",
+  "courseId": 1,
+  "courseTitle": "Java Programming",
+  "enrollDate": "2025-01-15",
+  "status": "Active"
+}
+```
+
+#### Отписка студента от курса
+```http
+DELETE /enrollment/unenroll/1/1
+```
+
+##### Параметры:
+- `studentId` (path variable, обязательный) - ID студента
+- `courseId` (path variable, обязательный) - ID курса
+
+##### Ответ (204 No Content)
+
+#### Получение всех записей студента
+```http
+GET /enrollment/student/1
+```
+
+##### Параметр:
+- `studentId` (path variable, обязательный) - ID студента
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "studentId": 1,
+    "studentName": "John Doe",
+    "courseId": 1,
+    "courseTitle": "Java Programming",
+    "enrollDate": "2025-01-15",
+    "status": "Active"
+  }
+]
+```
+
+#### Получение всех студентов, записанных на курс
+```http
+GET /enrollment/course/1
+```
+
+##### Параметр:
+- `courseId` (path variable, обязательный) - ID курса
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "studentId": 1,
+    "studentName": "John Doe",
+    "courseId": 1,
+    "courseTitle": "Java Programming",
+    "enrollDate": "2025-01-15",
+    "status": "Active"
+  }
+]
+```
+
 ### Системные эндпоинты
 
 #### Простой эндпоинт для проверки

@@ -50,13 +50,12 @@ public class EntityToDtoMapper {
         }
 
         EnrollmentResponseDto dto = new EnrollmentResponseDto();
-        dto.setUserId(enrollment.getUserId());
-        dto.setCourseId(enrollment.getCourseId());
         if (enrollment.getStudent() != null) {
             dto.setStudentId(enrollment.getStudent().getId());
             dto.setStudentName(enrollment.getStudent().getName());
         }
         if (enrollment.getCourse() != null) {
+            dto.setCourseId(enrollment.getCourse().getId());
             dto.setCourseTitle(enrollment.getCourse().getTitle());
         }
         dto.setEnrollDate(enrollment.getEnrollDate());
