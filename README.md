@@ -477,6 +477,662 @@ GET /lesson/module/1
 ]
 ```
 
+### Задания
+
+#### Создание задания
+```http
+POST /assignment
+Content-Type: application/json
+
+{
+  "lessonId": 1,
+  "title": "Homework #1: Java Basics",
+  "description": "Complete the exercises on Java basics",
+  "dueDate": "2025-01-30",
+  "maxScore": 100
+}
+```
+
+##### Поля:
+- `lessonId` (long, обязательное) - ID урока, к которому относится задание
+- `title` (string, обязательное) - Название задания
+- `description` (string, опционально) - Описание задания
+- `dueDate` (date, опционально) - Дата сдачи задания
+- `maxScore` (integer, опционально) - Максимальный балл за задание
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "title": "Homework #1: Java Basics",
+  "description": "Complete the exercises on Java basics",
+  "dueDate": "2025-01-30",
+  "maxScore": 100,
+  "lessonId": 1,
+  "lessonTitle": "Introduction to Java"
+}
+```
+
+#### Получение задания по ID
+```http
+GET /assignment/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Homework #1: Java Basics",
+  "description": "Complete the exercises on Java basics",
+  "dueDate": "2025-01-30",
+  "maxScore": 100,
+  "lessonId": 1,
+  "lessonTitle": "Introduction to Java"
+}
+```
+
+#### Обновление задания
+```http
+PUT /assignment/1
+Content-Type: application/json
+
+{
+  "title": "Updated Homework #1: Java Basics",
+  "description": "Updated description...",
+  "dueDate": "2025-02-01",
+  "maxScore": 90
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Updated Homework #1: Java Basics",
+  "description": "Updated description...",
+  "dueDate": "2025-02-01",
+  "maxScore": 90,
+  "lessonId": 1,
+  "lessonTitle": "Introduction to Java"
+}
+```
+
+#### Удаление задания
+```http
+DELETE /assignment/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех заданий по уроку
+```http
+GET /assignment/lesson/1
+```
+
+##### Параметр:
+- `lessonId` (path variable, обязательный) - ID урока
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "title": "Homework #1: Java Basics",
+    "description": "Complete the exercises on Java basics",
+    "dueDate": "2025-01-30",
+    "maxScore": 100,
+    "lessonId": 1,
+    "lessonTitle": "Introduction to Java"
+  }
+]
+```
+
+### Ответы/решения студентов
+
+#### Создание ответа/решения студента
+```http
+POST /submission
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "assignmentId": 1,
+  "content": "The solution to the assignment..."
+}
+```
+
+##### Поля:
+- `studentId` (long, обязательное) - ID студента, который отправляет решение
+- `assignmentId` (long, обязательное) - ID задания, на которое отправляется решение
+- `content` (string, обязательное) - Содержание решения/ответа
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "submittedAt": "2025-01-15T14:30:00",
+  "content": "The solution to the assignment...",
+  "score": null,
+  "feedback": null,
+  "assignmentId": 1,
+  "assignmentTitle": "Homework #1: Java Basics",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Получение ответа/решения по ID
+```http
+GET /submission/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "submittedAt": "2025-01-15T14:30:00",
+  "content": "The solution to the assignment...",
+  "score": null,
+  "feedback": null,
+  "assignmentId": 1,
+  "assignmentTitle": "Homework #1: Java Basics",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Выставление оценки за ответ/решение
+```http
+PUT /submission/1/grade
+Content-Type: application/json
+
+{
+  "score": 95,
+  "feedback": "Good work, but consider optimization..."
+}
+```
+
+##### Поля:
+- `score` (integer, опционально, 0-100) - Балл за задание
+- `feedback` (string, опционально) - Обратная связь преподавателя
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "submittedAt": "2025-01-15T14:30:00",
+  "content": "The solution to the assignment...",
+  "score": 95,
+  "feedback": "Good work, but consider optimization...",
+  "assignmentId": 1,
+  "assignmentTitle": "Homework #1: Java Basics",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Получение всех ответов/решений по студенту
+```http
+GET /submission/student/1
+```
+
+##### Параметр:
+- `studentId` (path variable, обязательный) - ID студента
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "submittedAt": "2025-01-15T14:30:00",
+    "content": "The solution to the assignment...",
+    "score": 95,
+    "feedback": "Good work, but consider optimization...",
+    "assignmentId": 1,
+    "assignmentTitle": "Homework #1: Java Basics",
+    "studentId": 1,
+    "studentName": "John Doe"
+  }
+]
+```
+
+#### Получение всех ответов/решений по заданию
+```http
+GET /submission/assignment/1
+```
+
+##### Параметр:
+- `assignmentId` (path variable, обязательный) - ID задания
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "submittedAt": "2025-01-15T14:30:00",
+    "content": "The solution to the assignment...",
+    "score": 95,
+    "feedback": "Good work, but consider optimization...",
+    "assignmentId": 1,
+    "assignmentTitle": "Homework #1: Java Basics",
+    "studentId": 1,
+    "studentName": "John Doe"
+  }
+]
+```
+
+### Тесты
+
+#### Создание теста
+```http
+POST /quiz
+Content-Type: application/json
+
+{
+  "moduleId": 1,
+  "title": "Midterm Exam",
+  "timeLimit": 60
+}
+```
+
+##### Поля:
+- `moduleId` (long, обязательное) - ID модуля, к которому относится тест
+- `title` (string, обязательное) - Название теста
+- `timeLimit` (integer, опционально) - Ограничение по времени в минутах
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "title": "Midterm Exam",
+  "timeLimit": 60,
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+#### Получение теста по ID
+```http
+GET /quiz/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Midterm Exam",
+  "timeLimit": 60,
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+#### Обновление теста
+```http
+PUT /quiz/1
+Content-Type: application/json
+
+{
+  "title": "Updated Midterm Exam",
+  "timeLimit": 90
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Updated Midterm Exam",
+  "timeLimit": 90,
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+#### Удаление теста
+```http
+DELETE /quiz/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение теста по ID модуля
+```http
+GET /quiz/module/1
+```
+
+##### Параметр:
+- `moduleId` (path variable, обязательный) - ID модуля
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Midterm Exam",
+  "timeLimit": 60,
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+### Вопросы
+
+#### Создание вопроса
+```http
+POST /question
+Content-Type: application/json
+
+{
+  "quizId": 1,
+  "text": "What is the capital of France?",
+  "type": "SINGLE_CHOICE"
+}
+```
+
+##### Поля:
+- `quizId` (long, обязательное) - ID теста, к которому относится вопрос
+- `text` (string, обязательное) - Текст вопроса
+- `type` (string, обязательное) - Тип вопроса (SINGLE_CHOICE, MULTIPLE_CHOICE, TEXT)
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "text": "What is the capital of France?",
+  "type": "SINGLE_CHOICE",
+  "quizId": 1,
+  "quizTitle": "Midterm Exam"
+}
+```
+
+#### Получение вопроса по ID
+```http
+GET /question/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "text": "What is the capital of France?",
+  "type": "SINGLE_CHOICE",
+  "quizId": 1,
+  "quizTitle": "Midterm Exam"
+}
+```
+
+#### Обновление вопроса
+```http
+PUT /question/1
+Content-Type: application/json
+
+{
+  "text": "What is the capital of France? (Updated)",
+  "type": "MULTIPLE_CHOICE"
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "text": "What is the capital of France? (Updated)",
+  "type": "MULTIPLE_CHOICE",
+  "quizId": 1,
+  "quizTitle": "Midterm Exam"
+}
+```
+
+#### Удаление вопроса
+```http
+DELETE /question/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех вопросов по тесту
+```http
+GET /question/quiz/1
+```
+
+##### Параметр:
+- `quizId` (path variable, обязательный) - ID теста
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "text": "What is the capital of France?",
+    "type": "SINGLE_CHOICE",
+    "quizId": 1,
+    "quizTitle": "Midterm Exam"
+  }
+]
+```
+
+### Варианты ответов
+
+#### Создание варианта ответа
+```http
+POST /answer-option
+Content-Type: application/json
+
+{
+  "questionId": 1,
+  "text": "Paris",
+  "isCorrect": true
+}
+```
+
+##### Поля:
+- `questionId` (long, обязательное) - ID вопроса, к которому относится вариант ответа
+- `text` (string, обязательное) - Текст варианта ответа
+- `isCorrect` (boolean, опционально) - Указывает, является ли вариант правильным
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "text": "Paris",
+  "isCorrect": true,
+  "questionId": 1,
+  "questionText": "What is the capital of France?"
+}
+```
+
+#### Получение варианта ответа по ID
+```http
+GET /answer-option/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "text": "Paris",
+  "isCorrect": true,
+  "questionId": 1,
+  "questionText": "What is the capital of France?"
+}
+```
+
+#### Обновление варианта ответа
+```http
+PUT /answer-option/1
+Content-Type: application/json
+
+{
+  "text": "London",
+  "isCorrect": false
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "text": "London",
+  "isCorrect": false,
+  "questionId": 1,
+  "questionText": "What is the capital of France?"
+}
+```
+
+#### Удаление варианта ответа
+```http
+DELETE /answer-option/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех вариантов ответов по вопросу
+```http
+GET /answer-option/question/1
+```
+
+##### Параметр:
+- `questionId` (path variable, обязательный) - ID вопроса
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "text": "Paris",
+    "isCorrect": true,
+    "questionId": 1,
+    "questionText": "What is the capital of France?"
+  }
+]
+```
+
+### Результаты тестов
+
+#### Создание результата теста
+```http
+POST /quiz-submission
+Content-Type: application/json
+
+{
+  "quizId": 1,
+  "studentId": 1,
+  "score": 85
+}
+```
+
+##### Поля:
+- `quizId` (long, обязательное) - ID теста, который был сдан
+- `studentId` (long, обязательное) - ID студента, который сдал тест
+- `score` (integer, обязательное) - Балл, полученный в тесте
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "score": 85,
+  "takenAt": "2025-01-15T10:30:00",
+  "quizId": 1,
+  "quizTitle": "Midterm Exam",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Получение результата теста по ID
+```http
+GET /quiz-submission/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "score": 85,
+  "takenAt": "2025-01-15T10:30:00",
+  "quizId": 1,
+  "quizTitle": "Midterm Exam",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Обновление результата теста
+```http
+PUT /quiz-submission/1
+Content-Type: application/json
+
+{
+  "score": 90
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "score": 90,
+  "takenAt": "2025-01-15T10:30:00",
+  "quizId": 1,
+  "quizTitle": "Midterm Exam",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Удаление результата теста
+```http
+DELETE /quiz-submission/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех результатов тестов по студенту
+```http
+GET /quiz-submission/student/1
+```
+
+##### Параметр:
+- `studentId` (path variable, обязательный) - ID студента
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "score": 85,
+    "takenAt": "2025-01-15T10:30:00",
+    "quizId": 1,
+    "quizTitle": "Midterm Exam",
+    "studentId": 1,
+    "studentName": "John Doe"
+  }
+]
+```
+
+#### Получение всех результатов тестов по тесту
+```http
+GET /quiz-submission/quiz/1
+```
+
+##### Параметр:
+- `quizId` (path variable, обязательный) - ID теста
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "score": 85,
+    "takenAt": "2025-01-15T10:30:00",
+    "quizId": 1,
+    "quizTitle": "Midterm Exam",
+    "studentId": 1,
+    "studentName": "John Doe"
+  }
+]
+```
+
 ### Системные эндпоинты
 
 #### Простой эндпоинт для проверки

@@ -38,4 +38,13 @@ public class AnswerOption {
     
     @Schema(description = "Indicates if this option is correct", example = "true")
     private boolean isCorrect;
+
+    // Explicit getter and setter to follow JavaBean conventions for boolean fields
+    public boolean isCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(boolean correct) {
+        this.isCorrect = correct;
+    }
 }

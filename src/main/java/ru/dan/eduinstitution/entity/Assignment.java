@@ -1,6 +1,7 @@
 package ru.dan.eduinstitution.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +50,7 @@ public class Assignment {
     @Schema(description = "Maximum score for the assignment", example = "100")
     private Integer maxScore;
 
-    @OneToMany(mappedBy = "assignment", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignment", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Schema(description = "List of submissions for this assignment")
     private List<Submission> submissions;
 }
