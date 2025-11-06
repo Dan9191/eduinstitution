@@ -8,15 +8,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.dan.eduinstitution.entity.Course;
+import ru.dan.eduinstitution.entity.Tag;
 import ru.dan.eduinstitution.entity.User;
 import ru.dan.eduinstitution.exception.ResourceNotFoundException;
 import ru.dan.eduinstitution.model.CourseCreateDto;
 import ru.dan.eduinstitution.model.CourseResponseDto;
+import ru.dan.eduinstitution.model.CourseUpdateDto;
 import ru.dan.eduinstitution.repository.CourseRepository;
+import ru.dan.eduinstitution.repository.TagRepository;
 import ru.dan.eduinstitution.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Сервис работы с курсами.
@@ -28,6 +33,7 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
     private final CategoryCacheService categoryCacheService;
 
     private static final int DEFAULT_COURSE_DURATION = 30;
@@ -58,7 +64,7 @@ public class CourseService {
             course.setStartDate(LocalDate.now());
         }
         Optional<Integer> durationOpt = Optional.of(dto.getDuration());
-        if (startDateOpt.isPresent()) {
+        if (durationOpt.isPresent()) {
             course.setDuration(durationOpt.get());
         } else {
             course.setDuration(DEFAULT_COURSE_DURATION);
@@ -69,6 +75,77 @@ public class CourseService {
         return courseResponseDtoFromCourse(course);
     }
 
+    /**
+     * Обновление курса.
+     *
+     * @param id  ID курса
+     * @param dto Данные для обновления курса
+     * @return Обновленный курс
+     */
+    @Transactional
+    public CourseResponseDto updateCourse(Long id, @Valid CourseUpdateDto dto) {
+        log.info("Updating course with ID: {}", id);
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Course with id '%s' not found", id)));
+
+        // Обновляем поля курса, если они предоставлены
+        if (dto.getTitle() != null) {
+            course.setTitle(dto.getTitle());
+        }
+        if (dto.getDescription() != null) {
+            course.setDescription(dto.getDescription());
+        }
+        if (dto.getCategoryId() != null) {
+            course.setCategory(categoryCacheService.findById(dto.getCategoryId()));
+        }
+        if (dto.getTeacherId() != null) {
+            User teacher = userRepository.findById(dto.getTeacherId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            String.format("User with id '%s' not found", dto.getTeacherId())));
+            course.setTeacher(teacher);
+        }
+        if (dto.getDuration() != null) {
+            course.setDuration(dto.getDuration());
+        }
+        if (dto.getStartDate() != null) {
+            course.setStartDate(dto.getStartDate());
+        }
+
+        // Обновляем теги, если они предоставлены
+        if (dto.getTagIds() != null) {
+            Set<Tag> newTags = new HashSet<>();
+            for (Long tagId : dto.getTagIds()) {
+                Tag tag = tagRepository.findById(tagId)
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                String.format("Tag with id '%s' not found", tagId)));
+                newTags.add(tag);
+            }
+            course.setTags(newTags);
+        }
+
+        course = courseRepository.save(course);
+        log.info("Course updated with ID: {}", course.getId());
+
+        return courseResponseDtoFromCourse(course);
+    }
+
+    /**
+     * Получение курса по ID.
+     *
+     * @param id ID курса
+     * @return Курс
+     */
+    public CourseResponseDto getCourseById(Long id) {
+        log.info("Getting course by ID: {}", id);
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Course with id '%s' not found", id)));
+
+        return courseResponseDtoFromCourse(course);
+    }
 
     private CourseResponseDto courseResponseDtoFromCourse(Course course) {
         CourseResponseDto responseDto = new CourseResponseDto();

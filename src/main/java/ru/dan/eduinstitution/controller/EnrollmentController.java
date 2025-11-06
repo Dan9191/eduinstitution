@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -120,6 +121,58 @@ public class EnrollmentController {
         
         List<EnrollmentResponseDto> enrollments = enrollmentService.getCourseEnrollments(courseId);
         log.info("Retrieved {} student enrollments for course with ID {}", enrollments.size(), courseId);
+        
+        return ResponseEntity.ok(enrollments);
+    }
+
+    @Operation(
+            summary = "Update enrollment status",
+            description = "Updates the status of an enrollment",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Enrollment status updated successfully",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = EnrollmentResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Enrollment not found")
+            }
+    )
+    @PutMapping("/update-status/{studentId}/{courseId}")
+    public ResponseEntity<EnrollmentResponseDto> updateEnrollmentStatus(
+            @io.swagger.v3.oas.annotations.Parameter(description = "ID of the student")
+            @PathVariable Long studentId,
+            @io.swagger.v3.oas.annotations.Parameter(description = "ID of the course")
+            @PathVariable Long courseId,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "New status for the enrollment",
+                    required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = String.class))
+            ) @RequestBody String newStatus) {
+        log.info("Updating enrollment status for student ID {} and course ID {} to {}", 
+                studentId, courseId, newStatus);
+        
+        EnrollmentResponseDto responseDto = enrollmentService.updateEnrollmentStatus(studentId, courseId, newStatus);
+        log.info("Enrollment status updated for student ID {} and course ID {}", studentId, courseId);
+        
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @Operation(
+            summary = "Get all enrollments with a specific status",
+            description = "Retrieves all enrollments with a specific status",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "List of enrollments with status retrieved successfully",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = EnrollmentResponseDto[].class)))
+            }
+    )
+    @GetMapping("/by-status/{status}")
+    public ResponseEntity<List<EnrollmentResponseDto>> getEnrollmentsByStatus(
+            @io.swagger.v3.oas.annotations.Parameter(description = "Status to filter enrollments by")
+            @PathVariable String status) {
+        log.info("Getting enrollments with status: {}", status);
+        
+        List<EnrollmentResponseDto> enrollments = enrollmentService.getEnrollmentsByStatus(status);
+        log.info("Retrieved {} enrollments with status: {}", enrollments.size(), status);
         
         return ResponseEntity.ok(enrollments);
     }

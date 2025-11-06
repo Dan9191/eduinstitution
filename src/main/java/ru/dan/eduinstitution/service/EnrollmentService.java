@@ -131,6 +131,50 @@ public class EnrollmentService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Обновление статуса записи.
+     *
+     * @param studentId ID студента
+     * @param courseId ID курса
+     * @param newStatus Новый статус
+     * @return Обновленная запись
+     */
+    @Transactional
+    public EnrollmentResponseDto updateEnrollmentStatus(Long studentId, Long courseId, String newStatus) {
+        log.info("Updating enrollment status for student ID {} and course ID {} to {}", studentId, courseId, newStatus);
+
+        EnrollmentId enrollmentId = new EnrollmentId();
+        enrollmentId.setUserId(studentId);
+        enrollmentId.setCourseId(courseId);
+
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Enrollment with student ID '%s' and course ID '%s' not found", 
+                                studentId, courseId)));
+
+        enrollment.setStatus(newStatus);
+        enrollment = enrollmentRepository.save(enrollment);
+
+        log.info("Enrollment status updated for student ID {} and course ID {} to {}", studentId, courseId, newStatus);
+
+        return enrollmentResponseDtoFromEnrollment(enrollment);
+    }
+
+    /**
+     * Получить список записей по статусу.
+     *
+     * @param status Статус записей
+     * @return Список записей
+     */
+    public List<EnrollmentResponseDto> getEnrollmentsByStatus(String status) {
+        log.info("Getting enrollments with status: {}", status);
+
+        List<Enrollment> enrollments = enrollmentRepository.findByStatus(status);
+        return enrollments.stream()
+                .map(this::enrollmentResponseDtoFromEnrollment)
+                .collect(Collectors.toList());
+    }
+
     private EnrollmentResponseDto enrollmentResponseDtoFromEnrollment(Enrollment enrollment) {
         EnrollmentResponseDto dto = new EnrollmentResponseDto();
         dto.setStudentId(enrollment.getUserId());

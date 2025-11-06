@@ -142,4 +142,52 @@ public class ModuleController {
         log.info("Retrieved {} modules for course with ID: {}", responseDtos.size(), courseId);
         return ResponseEntity.ok(responseDtos);
     }
+
+    @Operation(
+            summary = "Move a module to a different course",
+            description = "Moves a module to a different course",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Module moved successfully",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ModuleResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Module or course not found")
+            }
+    )
+    @PutMapping("/{moduleId}/move-to-course/{targetCourseId}")
+    public ResponseEntity<ModuleResponseDto> moveModuleToCourse(
+            @io.swagger.v3.oas.annotations.Parameter(description = "Unique identifier of the module")
+            @PathVariable Long moduleId,
+            @io.swagger.v3.oas.annotations.Parameter(description = "Unique identifier of the target course")
+            @PathVariable Long targetCourseId) {
+        log.info("Moving module with ID {} to course with ID {}", moduleId, targetCourseId);
+        ModuleResponseDto responseDto = moduleService.moveModuleToCourse(moduleId, targetCourseId);
+        log.info("Module with ID {} moved to course with ID {}", moduleId, targetCourseId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @Operation(
+            summary = "Reorder a module within a course",
+            description = "Changes the order index of a module within a course",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Module reordered successfully",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ModuleResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Module not found")
+            }
+    )
+    @PutMapping("/{moduleId}/reorder")
+    public ResponseEntity<ModuleResponseDto> reorderModule(
+            @io.swagger.v3.oas.annotations.Parameter(description = "Unique identifier of the module")
+            @PathVariable Long moduleId,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "New order index for the module",
+                    required = true,
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Integer.class))
+            ) @RequestBody Integer newOrderIndex) {
+        log.info("Reordering module with ID {} to position {}", moduleId, newOrderIndex);
+        ModuleResponseDto responseDto = moduleService.reorderModule(moduleId, newOrderIndex);
+        log.info("Module with ID {} reordered to position {}", moduleId, newOrderIndex);
+        return ResponseEntity.ok(responseDto);
+    }
 }

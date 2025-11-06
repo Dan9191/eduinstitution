@@ -135,6 +135,56 @@ public class ModuleService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Перемещение модуля в другой курс.
+     *
+     * @param moduleId ID модуля
+     * @param targetCourseId ID целевого курса
+     * @return Обновленный модуль
+     */
+    @Transactional
+    public ModuleResponseDto moveModuleToCourse(Long moduleId, Long targetCourseId) {
+        log.info("Moving module with ID {} to course with ID {}", moduleId, targetCourseId);
+
+        Module module = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Module with id '%s' not found", moduleId)));
+
+        Course targetCourse = courseRepository.findById(targetCourseId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Course with id '%s' not found", targetCourseId)));
+
+        module.setCourse(targetCourse);
+
+        module = moduleRepository.save(module);
+        log.info("Module with ID {} moved to course with ID {}", moduleId, targetCourseId);
+
+        return moduleResponseDtoFromModule(module);
+    }
+
+    /**
+     * Изменение порядка модуля.
+     *
+     * @param moduleId ID модуля
+     * @param newOrderIndex Новый порядковый индекс
+     * @return Обновленный модуль
+     */
+    @Transactional
+    public ModuleResponseDto reorderModule(Long moduleId, Integer newOrderIndex) {
+        log.info("Reordering module with ID {} to position {}", moduleId, newOrderIndex);
+
+        Module module = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Module with id '%s' not found", moduleId)));
+
+        module.setOrderIndex(newOrderIndex);
+
+        module = moduleRepository.save(module);
+        log.info("Module with ID {} reordered to position {}", moduleId, newOrderIndex);
+
+        return moduleResponseDtoFromModule(module);
+    }
+
     private ModuleResponseDto moduleResponseDtoFromModule(Module module) {
         ModuleResponseDto dto = new ModuleResponseDto();
         dto.setId(module.getId());

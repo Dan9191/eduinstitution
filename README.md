@@ -1280,6 +1280,284 @@ GET /course-review/course/1/average-rating
 4.5
 ```
 
+### Теги
+
+#### Создание тега
+```http
+POST /tag
+Content-Type: application/json
+
+{
+  "name": "Java"
+}
+```
+
+##### Поля:
+- `name` (string, обязательное) - Название тега
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "name": "Java"
+}
+```
+
+#### Получение тега по ID
+```http
+GET /tag/1
+```
+
+##### Параметр:
+- `id` (path variable, обязательный) - Уникальный идентификатор тега
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "name": "Java"
+}
+```
+
+#### Обновление тега
+```http
+PUT /tag/1
+Content-Type: application/json
+
+{
+  "name": "Java Advanced"
+}
+```
+
+##### Поля:
+- `name` (string, опционально) - Новое название тега
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "name": "Java Advanced"
+}
+```
+
+#### Удаление тега
+```http
+DELETE /tag/1
+```
+
+##### Параметр:
+- `id` (path variable, обязательный) - Уникальный идентификатор тега
+
+##### Ответ (204 No Content)
+
+#### Получение всех тегов
+```http
+GET /tag
+```
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "name": "Java"
+  },
+  {
+    "id": 2,
+    "name": "Spring"
+  }
+]
+```
+
+#### Добавление тега к курсу
+```http
+POST /tag/course/1/tag/1
+```
+
+##### Параметры:
+- `courseId` (path variable, обязательный) - Уникальный идентификатор курса
+- `tagId` (path variable, обязательный) - Уникальный идентификатор тега
+
+##### Ответ (204 No Content)
+
+#### Удаление тега из курса
+```http
+DELETE /tag/course/1/tag/1
+```
+
+##### Параметры:
+- `courseId` (path variable, обязательный) - Уникальный идентификатор курса
+- `tagId` (path variable, обязательный) - Уникальный идентификатор тега
+
+##### Ответ (204 No Content)
+
+#### Добавление нескольких тегов к курсу
+```http
+POST /tag/course/1/tags
+Content-Type: application/json
+
+[1, 2, 3]
+```
+
+##### Параметр:
+- `courseId` (path variable, обязательный) - Уникальный идентификатор курса
+- `tagIds` (request body, обязательный) - Список ID тегов для добавления
+
+##### Ответ (204 No Content)
+
+#### Удаление нескольких тегов из курса
+```http
+DELETE /tag/course/1/tags
+Content-Type: application/json
+
+[1, 2, 3]
+```
+
+##### Параметр:
+- `courseId` (path variable, обязательный) - Уникальный идентификатор курса
+- `tagIds` (request body, обязательный) - Список ID тегов для удаления
+
+##### Ответ (204 No Content)
+
+### Расширенное управление модулями
+
+#### Перемещение модуля в другой курс
+```http
+PUT /module/1/move-to-course/2
+```
+
+##### Параметры:
+- `moduleId` (path variable, обязательный) - Уникальный идентификатор модуля
+- `targetCourseId` (path variable, обязательный) - ID курса, в который нужно переместить модуль
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Initial Module Title",
+  "orderIndex": 1,
+  "description": "Initial module description",
+  "courseId": 2,
+  "courseTitle": "Test Course 2 for Advanced Management"
+}
+```
+
+#### Изменение порядка модуля
+```http
+PUT /module/1/reorder
+Content-Type: application/json
+
+3
+```
+
+##### Параметры:
+- `moduleId` (path variable, обязательный) - Уникальный идентификатор модуля
+- `newOrderIndex` (request body, обязательный) - Новый порядковый индекс для модуля
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Initial Module Title",
+  "orderIndex": 3,
+  "description": "Initial module description",
+  "courseId": 2,
+  "courseTitle": "Test Course 2 for Advanced Management"
+}
+```
+
+### Расширенное управление записями на курсы
+
+#### Обновление статуса записи
+```http
+PUT /enrollment/update-status/1/1
+Content-Type: application/json
+
+"Completed"
+```
+
+##### Параметры:
+- `studentId` (path variable, обязательный) - ID студента
+- `courseId` (path variable, обязательный) - ID курса
+- `newStatus` (request body, обязательный) - Новый статус записи (например, "Active", "Completed", "Dropped")
+
+##### Ответ (200 OK):
+```json
+{
+  "studentId": 1,
+  "studentName": "Test Student 1 for Advanced Management",
+  "courseId": 1,
+  "courseTitle": "Test Course 1 for Advanced Management",
+  "enrollDate": "2025-01-15",
+  "status": "Completed"
+}
+```
+
+#### Получение записей по статусу
+```http
+GET /enrollment/by-status/Completed
+```
+
+##### Параметр:
+- `status` (path variable, обязательный) - Статус, по которому фильтруются записи
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "studentId": 1,
+    "studentName": "Test Student 1 for Advanced Management",
+    "courseId": 1,
+    "courseTitle": "Test Course 1 for Advanced Management",
+    "enrollDate": "2025-01-15",
+    "status": "Completed"
+  }
+]
+```
+
+### Обновление курса
+
+#### Обновление курса
+```http
+PUT /course/1
+Content-Type: application/json
+
+{
+  "title": "Updated Java Programming",
+  "description": "Updated course on Java programming",
+  "categoryId": 1,
+  "teacherId": 1,
+  "duration": 45,
+  "startDate": "2025-02-01",
+  "tagIds": [1, 2]
+}
+```
+
+##### Параметры:
+- `id` (path variable, обязательный) - Уникальный идентификатор курса
+- `title` (string, опционально) - Новое название курса
+- `description` (string, опционально) - Новое описание курса
+- `categoryId` (long, опционально) - Новый ID категории
+- `teacherId` (long, опционально) - Новый ID преподавателя
+- `duration` (integer, опционально) - Новая продолжительность курса в днях
+- `startDate` (date, опционально) - Новая дата начала курса
+- `tagIds` (set of long, опционально) - Список ID тегов для связи с курсом
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Updated Java Programming",
+  "description": "Updated course on Java programming",
+  "categoryId": 1,
+  "categoryName": "Programming",
+  "teacherId": 1,
+  "teacherName": "John Doe",
+  "duration": 45,
+  "startDate": "2025-02-01"
+}
+```
+
 ### Системные эндпоинты
 
 #### Простой эндпоинт для проверки
