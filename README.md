@@ -10,27 +10,6 @@ http://localhost:8084/swagger-ui.html
 
 Сервис для управления образовательным учреждением. Предоставляет функциональность для управления пользователями, курсами, заданиями и другими аспектами образовательного процесса. 
 
-## Примеры запросов
-
-### Создание пользователя
-```http
-POST /user/create
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "role": "STUDENT",
-  "bio": "Software developer and teacher",
-  "avatarUrl": "https://example.com/avatar.jpg"
-}
-```
-
-### Получение пользователя по ID
-```http
-GET /user/1
-```
-
 ## Сборка
 
 Требуется Java 21 и Gradle.
@@ -61,3 +40,38 @@ GET /user/1
 | SPRING_FLYWAY_LOCATIONS                   | classpath:db/migration                                          | Расположение миграционных скриптов            |
 | SPRING_FLYWAY_BASELINE_ON_MIGRATE         | true                                                            | Базовая миграция при необходимости            |
 | MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE | health,info,metrics,env,build,git                               | Экспонируемые эндпоинты Actuator              |
+
+## Примеры запросов
+
+### Пользователи
+
+#### Создание пользователя
+```http
+POST /user/create
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "role": "STUDENT",
+  "bio": "Software developer and teacher",
+  "avatarUrl": "https://example.com/avatar.jpg"
+}
+```
+
+#### Получение пользователя по ID
+```http
+GET /user/1
+```
+
+### Категории
+
+#### Получение всех категорий
+```http
+GET /category
+```
+
+#### Получение категории по ID
+```http
+GET /category/1
+```
