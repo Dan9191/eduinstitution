@@ -64,7 +64,7 @@ public class CategoryController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponseDto> getCategoryById(
-        @Parameter(description = "Unique identifier of the category", required = true) 
+        @Parameter(description = "Unique identifier of the category") 
         @PathVariable Long id) {
         log.info("Retrieving category by ID: {}", id);
         Category category = categoryCacheService.findById(id.intValue());

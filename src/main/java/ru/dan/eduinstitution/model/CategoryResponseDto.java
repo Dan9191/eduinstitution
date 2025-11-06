@@ -17,6 +17,6 @@ public class CategoryResponseDto {
     @Schema(description = "Unique identifier of the category", example = "1")
     private Long id;
 
-    @Schema(description = "Name of the category", example = "Programming", required = true)
+    @Schema(description = "Name of the category", example = "Programming")
     private String name;
 }

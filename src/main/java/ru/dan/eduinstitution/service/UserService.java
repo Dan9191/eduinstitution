@@ -13,6 +13,9 @@ import ru.dan.eduinstitution.repository.UserRepository;
 
 import java.util.Optional;
 
+/**
+ * Сервис работы с пользователями.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,9 +30,17 @@ public class UserService {
         User user = new User(userCreateDto);
         User savedUser = userRepository.save(user);
         log.info("User entity saved with ID: {}", savedUser.getId());
-        
-        // Создаем UserResponseDto без вложенных объектов
-        UserResponseDto responseDto = new UserResponseDto(savedUser);
+        UserResponseDto responseDto = new UserResponseDto();
+        responseDto.setId(user.getId());
+        responseDto.setName(user.getName());
+        responseDto.setEmail(user.getEmail());
+        responseDto.setRole(user.getRole().name());
+
+        if (user.getProfile() != null) {
+            responseDto.setBio(user.getProfile().getBio());
+            responseDto.setAvatarUrl(user.getProfile().getAvatarUrl());
+        }
+
         return responseDto;
     }
 

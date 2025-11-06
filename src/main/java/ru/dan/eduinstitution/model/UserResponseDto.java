@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.dan.eduinstitution.entity.User;
 
 import java.util.List;
 
@@ -50,19 +49,4 @@ public class UserResponseDto {
     @Schema(description = "List of course reviews made by this user")
     private List<CourseReviewResponseDto> courseReviews;
 
-    public UserResponseDto(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.role = user.getRole().name();
-
-        if (user.getProfile() != null) {
-            this.bio = user.getProfile().getBio();
-            this.avatarUrl = user.getProfile().getAvatarUrl();
-        }
-
-        // Обратите внимание: в этом конструкторе мы не можем заполнить вложенные DTO,
-        // так как это требует дополнительной логики для преобразования сущностей в DTO
-        // Эта логика будет реализована в сервисе
-    }
 }

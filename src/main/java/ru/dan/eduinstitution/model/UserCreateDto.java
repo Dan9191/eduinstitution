@@ -13,11 +13,11 @@ import lombok.Data;
 public class UserCreateDto {
 
     @NotNull(message = "Name cannot be null")
-    @Schema(description = "Name of the user", example = "John Doe", required = true)
+    @Schema(description = "Name of the user", example = "John Doe")
     private String name;
 
     @NotNull(message = "Email cannot be null")
-    @Schema(description = "Email of the user", example = "john.doe@example.com", required = true)
+    @Schema(description = "Email of the user", example = "john.doe@example.com")
     private String email;
 
     @NotNull(message = "Role cannot be null")
