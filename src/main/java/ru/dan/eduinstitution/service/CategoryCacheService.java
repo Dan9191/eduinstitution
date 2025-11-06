@@ -25,10 +25,14 @@ public class CategoryCacheService {
 
     @PostConstruct
     void init() {
+        updateCache();
+    }
+
+    public void updateCache() {
         categoryMap = categoryRepository.findAll().stream().collect(Collectors.toMap(Category::getId, Function.identity()));
     }
 
-    public Category findById(int id) {
-        return categoryMap.get((long) id);
+    public Category findById(long id) {
+        return categoryMap.get(id);
     }
 }

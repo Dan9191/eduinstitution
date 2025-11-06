@@ -63,15 +63,15 @@ public class Course {
 
     // Связи
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Schema(description = "List of modules in this course", hidden = true)
+    @Schema(description = "List of modules in this course")
     private List<Module> modules;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Schema(description = "List of enrollments in this course", hidden = true)
+    @Schema(description = "List of enrollments in this course")
     private List<Enrollment> enrollments;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    @Schema(description = "List of reviews for this course", hidden = true)
+    @Schema(description = "List of reviews for this course")
     private List<CourseReview> reviews;
 
     @ManyToMany
@@ -80,6 +80,6 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    @Schema(description = "List of tags associated with this course", hidden = true)
+    @Schema(description = "List of tags associated with this course")
     private Set<Tag> tags = new HashSet<>();
 }

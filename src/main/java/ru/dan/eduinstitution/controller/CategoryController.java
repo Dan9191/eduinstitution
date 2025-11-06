@@ -42,7 +42,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
         log.info("Retrieving all categories from cache");
         List<Category> categories = categoryCacheService.getCategoryMap().values().stream()
-                .collect(Collectors.toList());
+                .toList();
         
         List<CategoryResponseDto> dtos = categories.stream()
                 .map(category -> new CategoryResponseDto(category.getId(), category.getName()))
@@ -67,7 +67,7 @@ public class CategoryController {
         @Parameter(description = "Unique identifier of the category") 
         @PathVariable Long id) {
         log.info("Retrieving category by ID: {}", id);
-        Category category = categoryCacheService.findById(id.intValue());
+        Category category = categoryCacheService.findById(id);
         if (category != null) {
             CategoryResponseDto dto = new CategoryResponseDto(category.getId(), category.getName());
             log.info("Successfully retrieved category: {}", dto.getName());

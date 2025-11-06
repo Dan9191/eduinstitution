@@ -59,9 +59,95 @@ Content-Type: application/json
 }
 ```
 
+##### Поля:
+- `name` (string, обязательное) - Имя пользователя
+- `email` (string, обязательное) - Email пользователя (уникальное значение)
+- `role` (string, обязательное) - Роль пользователя (STUDENT, TEACHER, ADMIN)
+- `bio` (string, опционально) - Биография пользователя
+- `avatarUrl` (string, опционально) - URL аватара пользователя
+
 #### Получение пользователя по ID
 ```http
 GET /user/1
+```
+
+##### Параметр:
+- `id` (long, обязательный) - Уникальный идентификатор пользователя
+
+### Курсы
+
+#### Создание курса
+```http
+POST /course/create
+Content-Type: application/json
+
+{
+  "title": "Java Programming",
+  "description": "Complete course on Java programming",
+  "categoryId": 1,
+  "teacherId": 1,
+  "duration": 30,
+  "startDate": "2025-01-15"
+}
+```
+
+##### Поля:
+- `title` (string, обязательное) - Название курса
+- `description` (string, опционально) - Описание курса
+- `categoryId` (long, обязательное) - ID категории, к которой относится курс
+- `teacherId` (long, обязательное) - ID преподавателя, ведущего курс
+- `duration` (integer, опционально) - Продолжительность курса в днях (по умолчанию 30)
+- `startDate` (date, опционально) - Дата начала курса (по умолчанию текущая дата)
+
+#### Получение всех курсов с пагинацией
+```http
+GET /course
+```
+
+##### Параметры пагинации:
+- `page` - номер страницы (по умолчанию 0)
+- `size` - размер страницы (по умолчанию 10)
+- `sort` - сортировка (необязательно)
+
+##### Примеры:
+```http
+GET /course?page=0&size=5
+GET /course?page=1&size=10&sort=title
+```
+
+##### Ответ:
+```json
+{
+  "content": [
+    {
+      "id": 1,
+      "title": "Java Programming",
+      "description": "Complete course on Java programming",
+      "categoryId": 1,
+      "categoryName": "Programming",
+      "teacherId": 1,
+      "teacherName": "John Doe",
+      "duration": 30,
+      "startDate": "2025-01-15"
+    }
+  ],
+  "pageable": {
+    "sort": { "empty": true, "unsorted": true, "sorted": false },
+    "offset": 0,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "paged": true,
+    "unpaged": false
+  },
+  "totalElements": 1,
+  "totalPages": 1,
+  "size": 10,
+  "number": 0,
+  "sort": { "empty": true, "unsorted": true, "sorted": false },
+  "numberOfElements": 1,
+  "first": true,
+  "last": true
+}
 ```
 
 ### Категории
@@ -71,7 +157,44 @@ GET /user/1
 GET /category
 ```
 
+##### Ответ:
+```json
+[
+  {
+    "id": 1,
+    "name": "Programming"
+  },
+  {
+    "id": 2,
+    "name": "Web Development"
+  }
+]
+```
+
 #### Получение категории по ID
 ```http
 GET /category/1
+```
+
+##### Параметр:
+- `id` (long, обязательный) - Уникальный идентификатор категории
+
+##### Ответ:
+```json
+{
+  "id": 1,
+  "name": "Programming"
+}
+```
+
+### Системные эндпоинты
+
+#### Простой эндпоинт для проверки
+```http
+GET /hi
+```
+
+##### Ответ:
+```
+hi
 ```

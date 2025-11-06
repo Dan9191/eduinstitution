@@ -40,13 +40,13 @@ public class Enrollment {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    @Schema(description = "Student enrolled in the course", hidden = true)
+    @Schema(description = "Student enrolled in the course")
     private User student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("courseId")
     @JoinColumn(name = "course_id")
-    @Schema(description = "Course in which the student is enrolled", hidden = true)
+    @Schema(description = "Course in which the student is enrolled")
     private Course course;
 
     @Schema(description = "Date when the enrollment was made", example = "2025-01-15")

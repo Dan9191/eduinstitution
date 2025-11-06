@@ -28,8 +28,8 @@ public class UserService {
     public UserResponseDto createUser(UserCreateDto userCreateDto) {
         log.info("Creating user entity with name: {}", userCreateDto.getName());
         User user = new User(userCreateDto);
-        User savedUser = userRepository.save(user);
-        log.info("User entity saved with ID: {}", savedUser.getId());
+        userRepository.save(user);
+        log.info("User entity saved with ID: {}", user.getId());
         UserResponseDto responseDto = new UserResponseDto();
         responseDto.setId(user.getId());
         responseDto.setName(user.getName());

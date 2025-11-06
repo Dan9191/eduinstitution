@@ -57,23 +57,23 @@ public class User {
     private Profile profile;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
-    @Schema(description = "List of courses taught by this user", hidden = true)
+    @Schema(description = "List of courses taught by this user")
     private List<Course> coursesTaught;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    @Schema(description = "List of enrollments of this user", hidden = true)
+    @Schema(description = "List of enrollments of this user")
     private List<Enrollment> enrollments;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    @Schema(description = "List of submissions made by this user", hidden = true)
+    @Schema(description = "List of submissions made by this user")
     private List<Submission> submissions;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    @Schema(description = "List of quiz submissions made by this user", hidden = true)
+    @Schema(description = "List of quiz submissions made by this user")
     private List<QuizSubmission> quizSubmissions;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    @Schema(description = "List of course reviews made by this user", hidden = true)
+    @Schema(description = "List of course reviews made by this user")
     private List<CourseReview> courseReviews;
 
     public User(UserCreateDto userCreateDto) {

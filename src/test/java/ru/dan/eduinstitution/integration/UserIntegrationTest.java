@@ -1,4 +1,4 @@
-package ru.dan.eduinstitution.controller;
+package ru.dan.eduinstitution.integration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import ru.dan.eduinstitution.model.UserResponseDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @AutoConfigureWebMvc
-class UserControllerIntegrationTest extends BaseTestWithContext {
+class UserIntegrationTest extends BaseTestWithContext {
 
     @Test
     @DisplayName("Тест создания пользователя с валидными данными")
