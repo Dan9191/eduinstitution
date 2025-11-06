@@ -271,6 +271,212 @@ GET /enrollment/course/1
 ]
 ```
 
+### Модули
+
+#### Создание модуля
+```http
+POST /module
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "title": "Java Fundamentals",
+  "orderIndex": 1,
+  "description": "This module covers Java fundamentals..."
+}
+```
+
+##### Поля:
+- `courseId` (long, обязательное) - ID курса, к которому относится модуль
+- `title` (string, обязательное) - Название модуля
+- `orderIndex` (integer, опционально) - Порядковый номер модуля
+- `description` (string, опционально) - Описание модуля
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "title": "Java Fundamentals",
+  "orderIndex": 1,
+  "description": "This module covers Java fundamentals...",
+  "courseId": 1,
+  "courseTitle": "Java Programming"
+}
+```
+
+#### Получение модуля по ID
+```http
+GET /module/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Java Fundamentals",
+  "orderIndex": 1,
+  "description": "This module covers Java fundamentals...",
+  "courseId": 1,
+  "courseTitle": "Java Programming"
+}
+```
+
+#### Обновление модуля
+```http
+PUT /module/1
+Content-Type: application/json
+
+{
+  "title": "Updated Java Fundamentals",
+  "orderIndex": 2,
+  "description": "Updated description..."
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Updated Java Fundamentals",
+  "orderIndex": 2,
+  "description": "Updated description...",
+  "courseId": 1,
+  "courseTitle": "Java Programming"
+}
+```
+
+#### Удаление модуля
+```http
+DELETE /module/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех модулей по курсу
+```http
+GET /module/course/1
+```
+
+##### Параметр:
+- `courseId` (path variable, обязательный) - ID курса
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "title": "Java Fundamentals",
+    "orderIndex": 1,
+    "description": "This module covers Java fundamentals...",
+    "courseId": 1,
+    "courseTitle": "Java Programming"
+  }
+]
+```
+
+### Уроки
+
+#### Создание урока
+```http
+POST /lesson
+Content-Type: application/json
+
+{
+  "moduleId": 1,
+  "title": "Introduction to Java",
+  "content": "This lesson covers Java basics...",
+  "videoUrl": "https://example.com/video1.mp4"
+}
+```
+
+##### Поля:
+- `moduleId` (long, обязательное) - ID модуля, к которому относится урок
+- `title` (string, обязательное) - Название урока
+- `content` (string, опционально) - Содержание урока
+- `videoUrl` (string, опционально) - URL видео урока
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "title": "Introduction to Java",
+  "content": "This lesson covers Java basics...",
+  "videoUrl": "https://example.com/video1.mp4",
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+#### Получение урока по ID
+```http
+GET /lesson/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Introduction to Java",
+  "content": "This lesson covers Java basics...",
+  "videoUrl": "https://example.com/video1.mp4",
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+#### Обновление урока
+```http
+PUT /lesson/1
+Content-Type: application/json
+
+{
+  "title": "Updated Introduction to Java",
+  "content": "Updated content...",
+  "videoUrl": "https://example.com/updated-video.mp4"
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "title": "Updated Introduction to Java",
+  "content": "Updated content...",
+  "videoUrl": "https://example.com/updated-video.mp4",
+  "moduleId": 1,
+  "moduleTitle": "Java Fundamentals"
+}
+```
+
+#### Удаление урока
+```http
+DELETE /lesson/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех уроков по модулю
+```http
+GET /lesson/module/1
+```
+
+##### Параметр:
+- `moduleId` (path variable, обязательный) - ID модуля
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "title": "Introduction to Java",
+    "content": "This lesson covers Java basics...",
+    "videoUrl": "https://example.com/video1.mp4",
+    "moduleId": 1,
+    "moduleTitle": "Java Fundamentals"
+  }
+]
+```
+
 ### Системные эндпоинты
 
 #### Простой эндпоинт для проверки
