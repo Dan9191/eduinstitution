@@ -7,14 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import ru.dan.eduinstitution.config.BaseTestWithContext;
 import ru.dan.eduinstitution.entity.Category;
 import ru.dan.eduinstitution.entity.Course;
 import ru.dan.eduinstitution.entity.User;
-import ru.dan.eduinstitution.model.CourseResponseDto;
 import ru.dan.eduinstitution.repository.CategoryRepository;
 import ru.dan.eduinstitution.repository.CourseRepository;
 import ru.dan.eduinstitution.repository.UserRepository;
@@ -28,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Интеграционный тест для CourseController.
- * Использует настоящую базу данных через Testcontainers.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CourseIntegrationTest extends BaseTestWithContext {

@@ -14,5 +14,6 @@ public interface CourseReviewRepository extends JpaRepository<CourseReview, Long
 
     Optional<CourseReview> findByCourseIdAndStudentId(Long courseId, Long studentId);
 
-    double findAverageRatingByCourseId(Long courseId);
+    @org.springframework.data.jpa.repository.Query("SELECT AVG(cr.rating) FROM CourseReview cr WHERE cr.course.id = :courseId")
+    Double findAverageRatingByCourseId(Long courseId);
 }

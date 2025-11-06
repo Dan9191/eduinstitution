@@ -1133,6 +1133,153 @@ GET /quiz-submission/quiz/1
 ]
 ```
 
+### Отзывы о курсах
+
+#### Добавление отзыва о курсе (addReview method)
+```http
+POST /course-review
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "studentId": 1,
+  "rating": 5,
+  "comment": "Great course with excellent content!"
+}
+```
+
+##### Поля:
+- `courseId` (long, обязательное) - ID курса, о котором пишется отзыв
+- `studentId` (long, обязательное) - ID студента, который пишет отзыв
+- `rating` (integer, обязательное, 1-5) - Рейтинг курса
+- `comment` (string, опционально) - Комментарий в отзыве
+
+##### Ответ (201 Created):
+```json
+{
+  "id": 1,
+  "rating": 5,
+  "comment": "Great course with excellent content!",
+  "createdAt": "2025-01-15T16:45:00",
+  "courseId": 1,
+  "courseTitle": "Java Programming",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Получение отзыва по ID
+```http
+GET /course-review/1
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "rating": 5,
+  "comment": "Great course with excellent content!",
+  "createdAt": "2025-01-15T16:45:00",
+  "courseId": 1,
+  "courseTitle": "Java Programming",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Обновление отзыва
+```http
+PUT /course-review/1
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "comment": "Good course but could be improved."
+}
+```
+
+##### Ответ (200 OK):
+```json
+{
+  "id": 1,
+  "rating": 4,
+  "comment": "Good course but could be improved.",
+  "createdAt": "2025-01-15T16:45:00",
+  "courseId": 1,
+  "courseTitle": "Java Programming",
+  "studentId": 1,
+  "studentName": "John Doe"
+}
+```
+
+#### Удаление отзыва
+```http
+DELETE /course-review/1
+```
+
+##### Ответ (204 No Content)
+
+#### Получение всех отзывов по курсу (getReviewsByCourse method)
+```http
+GET /course-review/course/1
+```
+
+##### Параметр:
+- `courseId` (path variable, обязательный) - ID курса
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "rating": 5,
+    "comment": "Great course with excellent content!",
+    "createdAt": "2025-01-15T16:45:00",
+    "courseId": 1,
+    "courseTitle": "Java Programming",
+    "studentId": 1,
+    "studentName": "John Doe"
+  }
+]
+```
+
+#### Получение всех отзывов по студенту
+```http
+GET /course-review/student/1
+```
+
+##### Параметр:
+- `studentId` (path variable, обязательный) - ID студента
+
+##### Ответ (200 OK):
+```json
+[
+  {
+    "id": 1,
+    "rating": 5,
+    "comment": "Great course with excellent content!",
+    "createdAt": "2025-01-15T16:45:00",
+    "courseId": 1,
+    "courseTitle": "Java Programming",
+    "studentId": 1,
+    "studentName": "John Doe"
+  }
+]
+```
+
+#### Получение среднего рейтинга по курсу
+```http
+GET /course-review/course/1/average-rating
+```
+
+##### Параметр:
+- `courseId` (path variable, обязательный) - ID курса
+
+##### Ответ (200 OK):
+```json
+4.5
+```
+
 ### Системные эндпоинты
 
 #### Простой эндпоинт для проверки

@@ -37,12 +37,12 @@ public class CourseController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Course created successfully",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = UserResponseDto.class))),
+                                    schema = @Schema(implementation = CourseResponseDto.class))),
                     @ApiResponse(responseCode = "400", description = "Invalid input data")
             }
     )
     @PostMapping("/create")
-    public ResponseEntity<CourseResponseDto> createUser(
+    public ResponseEntity<CourseResponseDto> createCourse(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Course details for creation",
                     required = true,
@@ -51,7 +51,7 @@ public class CourseController {
             ) @Valid @RequestBody CourseCreateDto dto) {
         log.info("Creating course with title: {}", dto.getTitle());
         CourseResponseDto responseDto = courseService.createCourse(dto);
-        log.info("User created with ID: {}", responseDto.getId());
+        log.info("Course created with ID: {}", responseDto.getId());
         return ResponseEntity.status(201).body(responseDto);
     }
 
